@@ -1,0 +1,19 @@
+% Dieting System Based on Disease
+
+% Disease and recommended food
+
+diet(diabetes, 'Vegetables, whole grains, pulses and low sugar foods').
+diet(hypertension, 'Fruits, vegetables, low salt and low fat foods').
+diet(obesity, 'Vegetables, fruits, whole grains and low calorie foods').
+diet(anemia, 'Iron rich foods such as spinach, beans and green vegetables').
+diet(ulcer, 'Soft foods, vegetables, fruits and avoid spicy foods').
+
+% Function to suggest diet
+
+suggest_diet(Disease) :-
+    diet(Disease, Food),
+    write('Disease: '),
+    write(Disease),
+    nl,
+    write('Recommended Diet: '),
+    write(Food).

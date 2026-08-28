@@ -1,0 +1,88 @@
+% TEACHER DATABASE
+% teacher(TeacherID, TeacherName)
+
+teacher(t201, ramesh).
+teacher(t202, kumar).
+teacher(t203, priya).
+
+
+% STUDENT DATABASE
+% student(StudentID, StudentName)
+
+student(s101, asha).
+student(s102, rahul).
+student(s103, priya_student).
+student(s104, john).
+
+
+% SUBJECT DATABASE
+% subject(SubjectCode, SubjectName)
+
+subject(cs101, computer_science).
+subject(math201, mathematics).
+subject(phy301, physics).
+
+
+% TEACHES DATABASE
+% teaches(TeacherID, SubjectCode)
+
+teaches(t201, cs101).
+teaches(t202, math201).
+teaches(t203, phy301).
+
+
+% ENROLLED DATABASE
+% enrolled(StudentID, SubjectCode)
+
+enrolled(s101, cs101).
+enrolled(s101, math201).
+enrolled(s102, cs101).
+enrolled(s103, phy301).
+enrolled(s104, math201).
+enrolled(s104, phy301).
+
+
+% 1. Find teacher of a specific student
+
+teacher_of_student(TeacherName, StudentName) :-
+    student(StudentID, StudentName),
+    enrolled(StudentID, SubCode),
+    teaches(TeacherID, SubCode),
+    teacher(TeacherID, TeacherName).
+
+
+% 2. Get all students under a teacher
+
+students_of_teacher(TeacherName, StudentName) :-
+    teacher_of_student(TeacherName, StudentName).
+
+
+% 3. Find courses taken by a student
+
+student_courses(StudentName, SubCode, SubjectName) :-
+    student(StudentID, StudentName),
+    enrolled(StudentID, SubCode),
+    subject(SubCode, SubjectName).
+
+
+% 4. Find classmates under the same teacher
+
+classmates_under_teacher(Student1, Student2, TeacherName) :-
+    teacher_of_student(TeacherName, Student1),
+    teacher_of_student(TeacherName, Student2),
+    Student1 \= Student2.
+
+
+% 5. Print subject summary
+
+subject_summary(SubCode) :-
+    subject(SubCode, SubName),
+    teaches(TeacherID, SubCode),
+    teacher(TeacherID, TeacherName),
+    format('Subject: ~w (~w)~n', [SubName, SubCode]),
+    format('Teacher: ~w~n', [TeacherName]),
+    format('Enrolled Students:~n', []),
+    forall(
+        (enrolled(StudID, SubCode), student(StudID, StudName)),
+        format(' - ~w (~w)~n', [StudName, StudID])
+    ).
